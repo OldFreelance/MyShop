@@ -19,14 +19,13 @@ namespace MyShop
         /// <summary>Сумма вырученная на кассе после обслуживания покупателя</summary>
         public decimal Money;
 
-
-        public Byer(DateTime time)
+        public Byer(Shop shop)
         {
             Random rnd = new Random();
-
-            TimeArrived = time;
-            HandlingTime = new TimeSpan(0, 0, rnd.Next(30)+30);
-            PatienceTime = new TimeSpan(0, rnd.Next(5) + 1, 0);
+            
+            TimeArrived = shop.Time;
+            HandlingTime = new TimeSpan(0, 0, rnd.Next(shop.HandlingTimeFrom, shop.HandlingTimeTo));
+            PatienceTime = new TimeSpan(0, 0, rnd.Next(shop.PatienceTimeFrom, shop.PatienceTimeTo));
             Money = rnd.Next(100);
         }
     }

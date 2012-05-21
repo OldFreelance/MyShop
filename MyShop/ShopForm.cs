@@ -30,18 +30,33 @@ namespace MyShop
 
         private void btnChange_Click(object sender, EventArgs e)
         {
-            OptionsForm optionsForm=new OptionsForm();
+            OptionsForm optionsForm=new OptionsForm(Shop);
             optionsForm.ShowDialog();
+            ApplySettings();
         }
 
         private void ShopForm_Load(object sender, EventArgs e)
         {
-            
+            OptionsForm optionsForm = new OptionsForm(Shop);
+            optionsForm.ShowDialog();
+            ApplySettings();
+
             dataGridViewCashs.AutoGenerateColumns = false;
             dataGridViewCashs.DataSource = Shop.Cashs;
 
-            timer1.Interval = 100;
             timer1.Enabled = true;
+        }
+
+        /// <summary>
+        /// Обновление информации главного окна программы
+        /// </summary>
+        private void ApplySettings()
+        {
+            timer1.Interval = 1000 / Shop.TimeStep;
+            lblTimeStep.Text = Shop.TimeStep.ToString();
+            lblByersInMorning.Text = Shop.ByersInMorning.ToString();
+            lblByersInDay.Text = Shop.ByersInDay.ToString();
+            lblByersInEvening.Text = Shop.ByersInEvening.ToString();
         }
     }
 }

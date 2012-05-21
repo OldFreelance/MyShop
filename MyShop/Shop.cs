@@ -10,35 +10,40 @@ namespace MyShop
     /// </summary>
     public class Shop
     {
-        /// <summary>
-        /// Текущее время
-        /// </summary>
+        /// <summary>Текущее время</summary>
         public DateTime Time;
 
-        /// <summary>
-        /// Коеффициент с которым меняется время работы магазина по отношению к реальному времени
-        /// </summary>
-        public int TimeStep;
-
-        /// <summary>
-        /// Вырука магазина
-        /// </summary>
+        /// <summary>Выручка магазина</summary>
         public decimal Receipts;
 
-        /// <summary>
-        /// Кассы в магазине
-        /// </summary>
+        /// <summary>Кассы в магазине</summary>
         public List<Cash> Cashs;
-
-        /// <summary>Интенсивность прихода покупателей утром </summary>
-        public int ByersInMorning;
-        /// <summary>Интенсивность прихода покупателей днем </summary>
-        public int ByersInDay;
-        /// <summary>Интенсивность прихода покупателей вечером </summary>
-        public int ByersInEvening;
 
         /// <summary>Количество необслуженных покупателей</summary>
         public int UnservicedByersCount;
+
+        #region Настройки программы
+        /// <summary>Коеффициент с которым меняется время работы магазина по отношению к реальному времени</summary>
+        public int TimeStep;
+        /// <summary>День скидок</summary>
+        public bool DiscountDay;
+
+        /// <summary>Интенсивность прихода покупателей утром </summary>
+        public int ByersInMorning=3;
+        /// <summary>Интенсивность прихода покупателей днем </summary>
+        public int ByersInDay=5;
+        /// <summary>Интенсивность прихода покупателей вечером </summary>
+        public int ByersInEvening=3;
+
+        /// <summary>Нижняя граница времени обслуживания покупателя</summary>
+        public int HandlingTimeFrom=30;
+        /// <summary>Верхняя граница времени обслуживания покупателя</summary>
+        public int HandlingTimeTo=90;
+        /// <summary>Нижняя граница времени ожидания покупателя</summary>
+        public int PatienceTimeFrom=300;
+        /// <summary>Верхняя граница времени ожидания покупателя</summary>
+        public int PatienceTimeTo=600;
+        #endregion
 
         /// <summary>
         /// Инициализация магазина
@@ -49,9 +54,7 @@ namespace MyShop
             TimeStep = 1;
             Time = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0);
             Receipts = 0;
-            ByersInMorning = 2;
-            ByersInDay = 5;
-            ByersInEvening = 2;
+            DiscountDay = false;
             UnservicedByersCount = 0;
             Cashs = new List<Cash>();
             for (int i = 0; i < 10; i++)
@@ -68,6 +71,7 @@ namespace MyShop
             //Создание дополнительных покупателей
             int intensity=0;
 
+            //Определение интенсивности по времени дня
             if (Time.Hour >= 8 && Time.Hour < 12)
                 intensity = ByersInMorning;
             else if (Time.Hour >= 12 && Time.Hour < 18)
@@ -75,20 +79,26 @@ namespace MyShop
             else if (Time.Hour >= 6 && Time.Hour < 23)
                 intensity = ByersInEvening;
 
-            if(rnd.Next(60)<intensity)
+            //Есди день скидок, то генерируем покупателей не раз в 60 сек, а раз в 40 (40=60/1.5)
+            int timeInterval = DiscountDay ? 40 : 60;
+
+            if (rnd.Next(timeInterval) < intensity)
             {
+                List<Cash> activeCashs = Cashs.Where(s => s.StateId == 1).ToList();
+
                 //Находим работающую кассу с минимальной очередью
-                Cash cash = Cashs.FirstOrDefault(c => c.QueryLength == Cashs.Where(s => s.StateId == 1).Min(s => s.QueryLength) && c.StateId == 1);
-                cash.Byers.Add(new Byer(Time));
+                Cash cash = activeCashs.FirstOrDefault(c => c.QueryLength == activeCashs.Min(s => s.QueryLength));
+                cash.Byers.Add(new Byer(this));
             }
 
+            //Логика работы касс
             foreach (var cash in Cashs)
             {
                 cash.Update(Time);
             }
 
-            Time = Time.AddSeconds(TimeStep);
-            
+            //Увеличиваем время
+            Time = Time.AddSeconds(1);
         }
     }
 }

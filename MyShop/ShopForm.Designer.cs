@@ -49,6 +49,10 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.lblByersInMorning = new System.Windows.Forms.Label();
+            this.lblByersInDay = new System.Windows.Forms.Label();
+            this.lblByersInEvening = new System.Windows.Forms.Label();
+            this.lblTimeStep = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCashs)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -183,6 +187,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lblTimeStep);
+            this.groupBox2.Controls.Add(this.lblByersInEvening);
+            this.groupBox2.Controls.Add(this.lblByersInDay);
+            this.groupBox2.Controls.Add(this.lblByersInMorning);
             this.groupBox2.Controls.Add(this.btnChange);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label6);
@@ -256,6 +264,42 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // lblByersInMorning
+            // 
+            this.lblByersInMorning.AutoSize = true;
+            this.lblByersInMorning.Location = new System.Drawing.Point(286, 20);
+            this.lblByersInMorning.Name = "lblByersInMorning";
+            this.lblByersInMorning.Size = new System.Drawing.Size(35, 13);
+            this.lblByersInMorning.TabIndex = 5;
+            this.lblByersInMorning.Text = "label9";
+            // 
+            // lblByersInDay
+            // 
+            this.lblByersInDay.AutoSize = true;
+            this.lblByersInDay.Location = new System.Drawing.Point(286, 40);
+            this.lblByersInDay.Name = "lblByersInDay";
+            this.lblByersInDay.Size = new System.Drawing.Size(41, 13);
+            this.lblByersInDay.TabIndex = 6;
+            this.lblByersInDay.Text = "label10";
+            // 
+            // lblByersInEvening
+            // 
+            this.lblByersInEvening.AutoSize = true;
+            this.lblByersInEvening.Location = new System.Drawing.Point(286, 60);
+            this.lblByersInEvening.Name = "lblByersInEvening";
+            this.lblByersInEvening.Size = new System.Drawing.Size(41, 13);
+            this.lblByersInEvening.TabIndex = 7;
+            this.lblByersInEvening.Text = "label11";
+            // 
+            // lblTimeStep
+            // 
+            this.lblTimeStep.AutoSize = true;
+            this.lblTimeStep.Location = new System.Drawing.Point(88, 19);
+            this.lblTimeStep.Name = "lblTimeStep";
+            this.lblTimeStep.Size = new System.Drawing.Size(41, 13);
+            this.lblTimeStep.TabIndex = 8;
+            this.lblTimeStep.Text = "label12";
+            // 
             // ShopForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -299,6 +343,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.Label lblUnservised;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblTimeStep;
+        private System.Windows.Forms.Label lblByersInEvening;
+        private System.Windows.Forms.Label lblByersInDay;
+        private System.Windows.Forms.Label lblByersInMorning;
     }
 }
 
