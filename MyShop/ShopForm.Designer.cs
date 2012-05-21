@@ -31,7 +31,12 @@
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridViewCashs = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblUnservised = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.lblTime = new System.Windows.Forms.Label();
             this.lblReceipts = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -72,6 +77,10 @@
             // dataGridViewCashs
             // 
             this.dataGridViewCashs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewCashs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3});
             this.tableLayoutPanel1.SetColumnSpan(this.dataGridViewCashs, 2);
             this.dataGridViewCashs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewCashs.Location = new System.Drawing.Point(3, 123);
@@ -80,8 +89,32 @@
             this.dataGridViewCashs.Size = new System.Drawing.Size(678, 336);
             this.dataGridViewCashs.TabIndex = 0;
             // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "StateName";
+            this.Column1.HeaderText = "Состояние";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.DataPropertyName = "QueryLength";
+            this.Column2.HeaderText = "Длина очереди";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 110;
+            // 
+            // Column3
+            // 
+            this.Column3.DataPropertyName = "Receipts";
+            this.Column3.HeaderText = "Выручка";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lblUnservised);
+            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.lblTime);
             this.groupBox1.Controls.Add(this.lblReceipts);
             this.groupBox1.Controls.Add(this.label2);
@@ -94,21 +127,41 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Текущее";
             // 
+            // lblUnservised
+            // 
+            this.lblUnservised.AutoSize = true;
+            this.lblUnservised.Location = new System.Drawing.Point(109, 60);
+            this.lblUnservised.Name = "lblUnservised";
+            this.lblUnservised.Size = new System.Drawing.Size(13, 13);
+            this.lblUnservised.TabIndex = 5;
+            this.lblUnservised.Text = "0";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(10, 60);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(90, 13);
+            this.label8.TabIndex = 4;
+            this.label8.Text = "Необслуженные";
+            // 
             // lblTime
             // 
             this.lblTime.AutoSize = true;
-            this.lblTime.Location = new System.Drawing.Point(70, 20);
+            this.lblTime.Location = new System.Drawing.Point(109, 20);
             this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(0, 13);
+            this.lblTime.Size = new System.Drawing.Size(13, 13);
             this.lblTime.TabIndex = 3;
+            this.lblTime.Text = "0";
             // 
             // lblReceipts
             // 
             this.lblReceipts.AutoSize = true;
-            this.lblReceipts.Location = new System.Drawing.Point(70, 36);
+            this.lblReceipts.Location = new System.Drawing.Point(109, 40);
             this.lblReceipts.Name = "lblReceipts";
-            this.lblReceipts.Size = new System.Drawing.Size(0, 13);
+            this.lblReceipts.Size = new System.Drawing.Size(13, 13);
             this.lblReceipts.TabIndex = 2;
+            this.lblReceipts.Text = "0";
             // 
             // label2
             // 
@@ -212,6 +265,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ShopForm";
             this.Text = "Магазин";
+            this.Load += new System.EventHandler(this.ShopForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCashs)).EndInit();
@@ -240,6 +294,11 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnChange;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.Label lblUnservised;
+        private System.Windows.Forms.Label label8;
     }
 }
 
