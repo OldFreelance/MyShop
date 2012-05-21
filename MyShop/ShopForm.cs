@@ -31,8 +31,8 @@ namespace MyShop
         private void btnChange_Click(object sender, EventArgs e)
         {
             OptionsForm optionsForm=new OptionsForm(Shop);
-            optionsForm.ShowDialog();
-            ApplySettings();
+            if(optionsForm.ShowDialog()==DialogResult.OK)
+                ApplySettings();
         }
 
         private void ShopForm_Load(object sender, EventArgs e)

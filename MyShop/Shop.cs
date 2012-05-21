@@ -36,13 +36,21 @@ namespace MyShop
         public int ByersInEvening=3;
 
         /// <summary>Нижняя граница времени обслуживания покупателя</summary>
-        public int HandlingTimeFrom=30;
+        public int HandlingTimeFrom=60;
         /// <summary>Верхняя граница времени обслуживания покупателя</summary>
-        public int HandlingTimeTo=90;
+        public int HandlingTimeTo=120;
         /// <summary>Нижняя граница времени ожидания покупателя</summary>
         public int PatienceTimeFrom=300;
         /// <summary>Верхняя граница времени ожидания покупателя</summary>
         public int PatienceTimeTo=600;
+
+        /// <summary>Нижняя граница выручки от покупателя</summary>
+        public int ByerReceiptsFrom=1;
+        /// <summary>Верхняя граница выручки от покупателя</summary>
+        public int ByerReceiptsTo = 100;
+
+        /// <summary>Максимальное число покупателей в очереди, после которого открывается новая касса</summary>
+        public int MaxQueryLength = 10;
         #endregion
 
         /// <summary>
@@ -68,8 +76,8 @@ namespace MyShop
         {
             GenerateByers();
 
-            //Если во всех работающих кассах длина очереди больше 10 человек
-            if(Cashs.Where(s=>s.StateId==1).Min(s=>s.QueryLength)==10)
+            //Если во всех работающих кассах длина очереди больше MaxQueryLength человек
+            if (Cashs.Where(s => s.StateId == 1).Min(s => s.QueryLength) == MaxQueryLength)
             {
                 //Активируем новую кассу
                 Cash cash = Cashs.FirstOrDefault(s => s.StateId == 0);

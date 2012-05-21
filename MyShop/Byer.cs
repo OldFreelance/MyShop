@@ -26,7 +26,7 @@ namespace MyShop
             TimeArrived = shop.Time;
             HandlingTime = new TimeSpan(0, 0, rnd.Next(shop.HandlingTimeFrom, shop.HandlingTimeTo));
             PatienceTime = new TimeSpan(0, 0, rnd.Next(shop.PatienceTimeFrom, shop.PatienceTimeTo));
-            Money = rnd.Next(100);
+            Money = rnd.Next(shop.ByerReceiptsFrom, shop.ByerReceiptsTo);
         }
     }
 }
