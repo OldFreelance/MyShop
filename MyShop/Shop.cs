@@ -66,9 +66,33 @@ namespace MyShop
         /// </summary>
         public void Update()
         {
-            Random rnd = new Random();
+            GenerateByers();
 
-            //Создание дополнительных покупателей
+            //Если во всех работающих кассах длина очереди больше 10 человек
+            if(Cashs.Where(s=>s.StateId==1).Min(s=>s.QueryLength)==10)
+            {
+                //Активируем новую кассу
+                Cash cash = Cashs.FirstOrDefault(s => s.StateId == 0);
+                if (cash != null)
+                    cash.StateId = 1;
+            }
+
+            //Логика работы касс
+            foreach (var cash in Cashs)
+            {
+                cash.Update(Time);
+            }
+
+            //Увеличиваем время
+            Time = Time.AddSeconds(1);
+        }
+
+        /// <summary>
+        /// Создание дополнительных покупателей
+        /// </summary>
+        private void GenerateByers()
+        {
+            Random rnd = new Random();
             int intensity=0;
 
             //Определение интенсивности по времени дня
@@ -90,15 +114,6 @@ namespace MyShop
                 Cash cash = activeCashs.FirstOrDefault(c => c.QueryLength == activeCashs.Min(s => s.QueryLength));
                 cash.Byers.Add(new Byer(this));
             }
-
-            //Логика работы касс
-            foreach (var cash in Cashs)
-            {
-                cash.Update(Time);
-            }
-
-            //Увеличиваем время
-            Time = Time.AddSeconds(1);
         }
     }
 }

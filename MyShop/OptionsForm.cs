@@ -17,7 +17,7 @@ namespace MyShop
             InitializeComponent();
             
             _shop = shop;
-            cmbTimeStep.SelectedItem = shop.TimeStep;
+            cmbTimeStep.SelectedItem = shop.TimeStep.ToString(); ;
             txtByersInMorning.Text = shop.ByersInMorning.ToString();
             txtByersInDay.Text = shop.ByersInDay.ToString();
             txtByersInEvening.Text = shop.ByersInEvening.ToString();
