@@ -12,7 +12,7 @@ namespace MyShop
     public partial class ShopForm : Form
     {
         public Shop Shop=new Shop();
-        //public BindingSource bsCashs = new BindingSource();
+        private DateTime GridLastRefreshTime=DateTime.Now;
 
         public ShopForm()
         {
@@ -22,7 +22,14 @@ namespace MyShop
         private void timer1_Tick(object sender, EventArgs e)
         {
             Shop.Update();
-            dataGridViewCashs.Refresh();
+
+            //обновление грида не чаще чем раз в секунду. Избавляет от мерцания и разгружает процессор
+            if (DateTime.Now - GridLastRefreshTime >= new TimeSpan(0,0,1))
+            {
+                dataGridViewCashs.Refresh();
+                GridLastRefreshTime = DateTime.Now;
+            }
+
             lblTime.Text = Shop.Time.ToString();
             lblReceipts.Text = Shop.Receipts.ToString();
             lblUnservised.Text = Shop.UnservicedByersCount.ToString();

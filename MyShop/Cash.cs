@@ -11,7 +11,13 @@ namespace MyShop
     /// </summary>
     public class Cash
     {
-        /// <summary>Состояние кассы (неактивна, активна, инкассация)</summary>
+        /// <summary>Всевозможные причины обслуживания кассы</summary>
+        public static string[] StateDiscriptions = { "Кончилась бумага", "Аннуляция", "Кассир отошел" };
+
+        /// <summary>Имя кассы</summary>
+        public string Name { get; set; }
+
+        /// <summary>Состояние кассы (0 - неактивна, 1 - активна, 2 - инкассация, 3 - обслуживание)</summary>
         public int StateId;
         public string StateName
         {
@@ -25,11 +31,16 @@ namespace MyShop
                         return "Работает";
                     case 2:
                         return "Инкассация";
+                    case 3:
+                        return StateDiscription;
                     default:
                         return "Неизвестное состояние";
                 }
             }
         }
+
+        /// <summary>Описание состояние обслуживания</summary>
+        public string StateDiscription;
 
         /// <summary>Длина очереди</summary>
         public int QueryLength { get { return Byers.Count; } }
@@ -51,18 +62,27 @@ namespace MyShop
         /// <summary>Время начала обслуживания очередного покупателя</summary>
         public DateTime HandlingStartTime;
 
+        /// <summary>Время начала обслуживания</summary>
+        public DateTime MaintenanceTime;
+        /// <summary>Продолжительность обслуживания</summary>
+        public TimeSpan MaintenanceLength;
+
         /// <summary>Покупатели на кассе</summary>
         public List<Byer> Byers;
 
-        public Cash()
+        public Cash(Shop shop)
         {
+            Shop = shop;
+            StateId = 0;
             Byers=new List<Byer>();
             CurrentByer = null;
         }
 
+        /// <summary>Для удобного просмотра касс в окне отладчика</summary>
+        /// <returns>Строка состояния кассы</returns>
         public override string ToString()
         {
-            return StateName + "("+QueryLength +"покупателей, выручка "+Receipts+")";
+            return StateName + "("+QueryLength +" покупателей, выручка "+Receipts+")";
         }
 
         /// <summary>
@@ -75,6 +95,9 @@ namespace MyShop
 
             //Поиск необслуженных покупателей
             FindUnservicedByers();
+
+            //Обслуживание
+            Maintenance();
 
             //Если выручка на кассе больше чем 10000
             if(StateId==1 && Receipts>=10000)
@@ -99,12 +122,42 @@ namespace MyShop
         }
 
         /// <summary>
+        /// Установка и снятие кассы с обслуживания
+        /// </summary>
+        private void Maintenance()
+        {
+            Random rnd = new Random();
+
+            switch(StateId)
+            {
+                case 1:
+                    //Примерно одна поломка в час
+                    if (rnd.Next(3600) == 0)
+                    {
+                        StateDiscription = StateDiscriptions[rnd.Next(StateDiscriptions.Length)];
+                        StateId = 3;
+                        //DistributeByers();
+                        MaintenanceTime = Shop.Time;
+                        MaintenanceLength = new TimeSpan(0, rnd.Next(5), 0);
+                    }
+                    break;
+                case 3:
+                    if(MaintenanceTime+MaintenanceLength<=Shop.Time)
+                    {
+                        StateId = 1;
+                    }
+                    break;
+            }
+
+        }
+
+        /// <summary>
         /// Обслуживание покупателей
         /// </summary>
         private void Handling()
         {
             //Если обслуживать некого, то возврат из функции
-            if (Byers.Count == 0)
+            if (Byers.Count == 0 || StateId != 1)
                 return;
 
             //Если никто не обслуживается

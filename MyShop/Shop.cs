@@ -64,13 +64,13 @@ namespace MyShop
         {
             DateTime now = DateTime.Now;
             TimeStep = 1;
-            Time = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0);
+            Time = new DateTime(now.Year, now.Month, now.Day, 21, 0, 0);
             Receipts = 0;
             DiscountDay = false;
             UnservicedByersCount = 0;
             Cashs = new List<Cash>();
             for (int i = 0; i < 10; i++)
-                Cashs.Add(new Cash {StateId = 0, Shop = this});
+                Cashs.Add(new Cash(this) {Name = "Касса " + (i+1)});
         }
 
         /// <summary>
@@ -84,8 +84,19 @@ namespace MyShop
             //Открытие новых касс по необходимости
             OpenNewCash();
 
-            //Закрытие малоиспользующихсф касс касс по необходимости
-            CloseUnisedCash();
+            //Закрытие малоиспользующихся касс касс по необходимости
+            CloseUnusedCash();
+
+            //Если магазин закрывается (22:00)
+            if (Time.Hour == 22 && Time.Minute == 0 && Time.Second==0)
+            {
+                //Инкассация на всех работающих кассах и на тех, где есть выручка
+                foreach (Cash cash in Cashs.Where(s => s.Receipts != 0 || (s.StateId != 0 && s.StateId != 2)))
+                {
+                    cash.KickAwayByers();
+                    cash.Encashment();
+                }
+            }
 
             //Логика работы касс
             foreach (var cash in Cashs)
@@ -102,9 +113,10 @@ namespace MyShop
         /// </summary>
         private void OpenNewCash()
         {
-            //Если во всех работающих кассах длина очереди больше MaxQueryLength человек
+            //Если есть работающие кассы
             if(ActiveCashs.Count!=0)
             {
+                //Если во всех работающих кассах длина очереди больше MaxQueryLength человек
                 if (ActiveCashs.Min(s => s.QueryLength) >= MaxQueryLength)
                 {
                     //Активируем новую кассу
@@ -115,8 +127,8 @@ namespace MyShop
             }
             else
             {
-                //Если произошло открытие магазина
-                if(Time.Hour==8 && Time.Minute==0)
+                //Если нет работающих касс и сейчас не ночь
+                if (Time.Hour >= 8 && Time.Hour < 22)
                 {
                     //Активируем новую кассу
                     Cash cash = Cashs.FirstOrDefault(s => s.StateId == 0);
@@ -129,7 +141,7 @@ namespace MyShop
         /// <summary>
         /// Закрытие по необходимости новых касс
         /// </summary>
-        private void CloseUnisedCash()
+        private void CloseUnusedCash()
         {
             //Если открыто более одной кассы
             if (ActiveCashs.Count > 1)
@@ -160,17 +172,6 @@ namespace MyShop
                 intensity = ByersInDay;
             else if (Time.Hour >= 17 && Time.Hour < 22)
                 intensity = ByersInEvening;
-
-            //Если магазин закрывается (22:00)
-            if(Time.Hour==22 && Time.Minute==0)
-            {
-                //Инкассация на всех кассах
-                foreach (Cash cash in Cashs.Where(s=>s.Receipts!=0))
-                {
-                    cash.KickAwayByers();
-                    cash.Encashment();
-                }
-            }
 
             //Есди день скидок, то генерируем покупателей не раз в 60 сек, а раз в 40 (40=60/1.5)
             int timeInterval = DiscountDay ? 40 : 60;
