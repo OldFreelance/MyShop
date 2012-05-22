@@ -18,6 +18,7 @@ namespace MyShop
             
             _shop = shop;
             cmbTimeStep.SelectedItem = shop.TimeStep.ToString();
+            txtMinQueryLength.Text = shop.MinQueryLength.ToString();
             txtMaxQueryLength.Text = shop.MaxQueryLength.ToString();
             txtByersInMorning.Text = shop.ByersInMorning.ToString();
             txtByersInDay.Text = shop.ByersInDay.ToString();
@@ -35,6 +36,7 @@ namespace MyShop
         {
             if(cmbTimeStep.SelectedItem!=null)
                 _shop.TimeStep = int.Parse(cmbTimeStep.SelectedItem.ToString());
+            _shop.MinQueryLength = int.Parse(txtMinQueryLength.Text);
             _shop.MaxQueryLength = int.Parse(txtMaxQueryLength.Text);
             _shop.ByersInMorning = int.Parse(txtByersInMorning.Text);
             _shop.ByersInDay = int.Parse(txtByersInDay.Text);

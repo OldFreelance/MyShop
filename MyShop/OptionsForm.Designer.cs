@@ -62,7 +62,10 @@
             this.label14 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.label15 = new System.Windows.Forms.Label();
+            this.txtMinQueryLength = new System.Windows.Forms.TextBox();
             this.txtMaxQueryLength = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -375,33 +378,63 @@
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(13, 43);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(114, 13);
+            this.label15.Size = new System.Drawing.Size(101, 13);
             this.label15.TabIndex = 13;
-            this.label15.Text = "Макс длина очереди:";
-            this.toolTip1.SetToolTip(this.label15, "Если все очереди привысят эту длину, будут открыта новая касса");
+            this.label15.Text = "Длина очереди от:";
+            this.toolTip1.SetToolTip(this.label15, "Если все очереди привысят максдлину, будут открыта новая касса. А если длина всех" +
+        " очередей мудет меньше минимальной лишняя касса будет закрыта.");
+            // 
+            // txtMinQueryLength
+            // 
+            this.txtMinQueryLength.Location = new System.Drawing.Point(143, 43);
+            this.txtMinQueryLength.Name = "txtMinQueryLength";
+            this.txtMinQueryLength.Size = new System.Drawing.Size(61, 20);
+            this.txtMinQueryLength.TabIndex = 14;
+            this.txtMinQueryLength.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPress);
             // 
             // txtMaxQueryLength
             // 
-            this.txtMaxQueryLength.Location = new System.Drawing.Point(143, 43);
+            this.txtMaxQueryLength.Location = new System.Drawing.Point(235, 43);
             this.txtMaxQueryLength.Name = "txtMaxQueryLength";
-            this.txtMaxQueryLength.Size = new System.Drawing.Size(61, 20);
-            this.txtMaxQueryLength.TabIndex = 14;
+            this.txtMaxQueryLength.Size = new System.Drawing.Size(64, 20);
+            this.txtMaxQueryLength.TabIndex = 6;
             this.txtMaxQueryLength.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPress);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(210, 46);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(19, 13);
+            this.label19.TabIndex = 9;
+            this.label19.Text = "до";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(306, 46);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(24, 13);
+            this.label20.TabIndex = 13;
+            this.label20.Text = "чел";
             // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(351, 287);
-            this.Controls.Add(this.txtMaxQueryLength);
+            this.Controls.Add(this.txtMinQueryLength);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.chkDiscountDay);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.label20);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmbTimeStep);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.txtMaxQueryLength);
+            this.Controls.Add(this.label19);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -445,11 +478,14 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox txtMaxQueryLength;
+        private System.Windows.Forms.TextBox txtMinQueryLength;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox txtByerReceiptsTo;
         private System.Windows.Forms.TextBox txtByerReceiptsFrom;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox txtMaxQueryLength;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
     }
 }

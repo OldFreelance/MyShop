@@ -60,28 +60,38 @@ namespace MyShop
             CurrentByer = null;
         }
 
+        public override string ToString()
+        {
+            return StateName + "("+QueryLength +"покупателей, выручка "+Receipts+")";
+        }
+
         /// <summary>
         /// Основной метод релизации логики работы кассы
         /// </summary>
-        public void Update(DateTime time)
+        public void Update()
         {
             //Обслуживание покупателей
-            Handling(time);
+            Handling();
 
             //Поиск необслуженных покупателей
-            FindUnservicedByers(time);
+            FindUnservicedByers();
 
             //Если выручка на кассе больше чем 10000
             if(StateId==1 && Receipts>=10000)
             {
                 //Инкассация
-                Encashment(time);
+                Encashment();
             }
 
             //Если прошло время необходимое на инкассацию
-            if(StateId == 2 && EncashmentTime+EncashmenLength <=time)
+            if (StateId == 2 && EncashmentTime + EncashmenLength <= Shop.Time)
             {
-                StateId = 1;
+                //Если инкассация закончилась днем 
+                if (Shop.Time.Hour >= 8 && Shop.Time.Hour < 22)
+                    StateId = 1;//то открываем кассу
+                else
+                    StateId = 0;//иначе закрываем кассу
+
                 //Перенос денег из кассы в магазин
                 Shop.Receipts += Receipts;
                 Receipts = 0;
@@ -91,8 +101,7 @@ namespace MyShop
         /// <summary>
         /// Обслуживание покупателей
         /// </summary>
-        /// <param name="time">Текущее время</param>
-        private void Handling(DateTime time)
+        private void Handling()
         {
             //Если обслуживать некого, то возврат из функции
             if (Byers.Count == 0)
@@ -104,12 +113,12 @@ namespace MyShop
                 //Поиск покупателя в очереди прибывшего раньше всего
                 Byer firstByer = Byers.FirstOrDefault(b => b.TimeArrived == Byers.Min(s => s.TimeArrived));
                 CurrentByer = firstByer;
-                HandlingStartTime = time;
+                HandlingStartTime = Shop.Time;
             }
             else
             {
                 //Если прошло время, необходимое на обслуживание покупателя
-                if (HandlingStartTime + CurrentByer.HandlingTime <= time)
+                if (HandlingStartTime + CurrentByer.HandlingTime <= Shop.Time)
                 {
                     //Удаляем его из очереди
                     Byers.Remove(CurrentByer);
@@ -120,7 +129,7 @@ namespace MyShop
                     //Обслуживание нового покупателя
                     Byer firstByer = Byers.FirstOrDefault(b => b.TimeArrived == Byers.Min(s => s.TimeArrived));
                     CurrentByer = firstByer;
-                    HandlingStartTime = time;
+                    HandlingStartTime = Shop.Time;
                 }
             }
         }
@@ -128,14 +137,13 @@ namespace MyShop
         /// <summary>
         /// Поиск необслуженных покупателей
         /// </summary>
-        /// <param name="time">Текущее время<</param>
-        private void FindUnservicedByers(DateTime time)
+        private void FindUnservicedByers()
         {
             for (int i = Byers.Count - 1; i >= 0; i--)
             {
                 Byer byer = Byers[i];
                 //Если покупатель не может больше ждать
-                if (byer.TimeArrived + byer.PatienceTime <= time)
+                if (byer.TimeArrived + byer.PatienceTime <= Shop.Time)
                 {
                     //Он ухождит из магазина
                     Byers.Remove(byer);
@@ -147,27 +155,44 @@ namespace MyShop
         /// <summary>
         /// Инкассация
         /// </summary>
-        /// <param name="time">Текущее время</param>
-        private void Encashment(DateTime time)
+        public void Encashment()
         {
             Random rnd = new Random();
 
             StateId = 2;
-            EncashmentTime = time;
+            EncashmentTime = Shop.Time;
             EncashmenLength = new TimeSpan(0, rnd.Next(10, 20), 0);
 
             //Покупатели в очереди распределяются по другим кассам
+            if(QueryLength!=0)
+                DistributeByers();
+        }
+
+        /// <summary>
+        /// Распределить покупателей по другим очередям
+        /// </summary>
+        public void DistributeByers()
+        {
             int cashIndex = 0;
-            List<Cash> activeCashs = Shop.Cashs.Where(s => s.StateId == 1).ToList();
+            //List<Cash> activeCashs = Shop.Cashs.Where(s => s.StateId == 1).ToList();
             for (int byerIndex = Byers.Count - 1; byerIndex >= 0; byerIndex--)
             {
                 Byer byer = Byers[byerIndex];
                 Byers.Remove(byer);
-                activeCashs[cashIndex].Byers.Add(byer);
+                Shop.ActiveCashs[cashIndex].Byers.Add(byer);
                 cashIndex++;
-                if (cashIndex >= activeCashs.Count)
+                if (cashIndex >= Shop.ActiveCashs.Count)
                     cashIndex = 0;
             }
+        }
+
+        /// <summary>
+        /// Прогнать всех покупателей
+        /// </summary>
+        public void KickAwayByers()
+        {
+            Shop.UnservicedByersCount += QueryLength;
+            Byers.Clear();
         }
     }
 }
