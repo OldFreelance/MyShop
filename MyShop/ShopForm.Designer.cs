@@ -50,10 +50,11 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StateId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StateName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.QueryLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Receipts = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCashs)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -83,10 +84,11 @@
             // 
             this.dataGridViewCashs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewCashs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column4,
-            this.Column1,
-            this.Column2,
-            this.Column3});
+            this.ColumnName,
+            this.StateId,
+            this.StateName,
+            this.QueryLength,
+            this.Receipts});
             this.tableLayoutPanel1.SetColumnSpan(this.dataGridViewCashs, 2);
             this.dataGridViewCashs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewCashs.Location = new System.Drawing.Point(3, 123);
@@ -134,9 +136,8 @@
             this.lblTime.AutoSize = true;
             this.lblTime.Location = new System.Drawing.Point(109, 20);
             this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(13, 13);
+            this.lblTime.Size = new System.Drawing.Size(0, 13);
             this.lblTime.TabIndex = 3;
-            this.lblTime.Text = "0";
             // 
             // lblReceipts
             // 
@@ -189,9 +190,9 @@
             this.lblTimeStep.AutoSize = true;
             this.lblTimeStep.Location = new System.Drawing.Point(88, 19);
             this.lblTimeStep.Name = "lblTimeStep";
-            this.lblTimeStep.Size = new System.Drawing.Size(41, 13);
+            this.lblTimeStep.Size = new System.Drawing.Size(13, 13);
             this.lblTimeStep.TabIndex = 8;
-            this.lblTimeStep.Text = "label12";
+            this.lblTimeStep.Text = "1";
             // 
             // lblByersInEvening
             // 
@@ -280,35 +281,43 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // Column4
+            // ColumnName
             // 
-            this.Column4.DataPropertyName = "Name";
-            this.Column4.HeaderText = "Имя";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
+            this.ColumnName.DataPropertyName = "Name";
+            this.ColumnName.HeaderText = "Имя";
+            this.ColumnName.Name = "ColumnName";
+            this.ColumnName.ReadOnly = true;
             // 
-            // Column1
+            // StateId
             // 
-            this.Column1.DataPropertyName = "StateName";
-            this.Column1.HeaderText = "Состояние";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 150;
+            this.StateId.DataPropertyName = "StateId";
+            this.StateId.HeaderText = "StateId";
+            this.StateId.Name = "StateId";
+            this.StateId.ReadOnly = true;
+            this.StateId.Visible = false;
             // 
-            // Column2
+            // StateName
             // 
-            this.Column2.DataPropertyName = "QueryLength";
-            this.Column2.HeaderText = "Длина очереди";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Width = 110;
+            this.StateName.DataPropertyName = "StateName";
+            this.StateName.HeaderText = "Состояние";
+            this.StateName.Name = "StateName";
+            this.StateName.ReadOnly = true;
+            this.StateName.Width = 150;
             // 
-            // Column3
+            // QueryLength
             // 
-            this.Column3.DataPropertyName = "Receipts";
-            this.Column3.HeaderText = "Выручка";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
+            this.QueryLength.DataPropertyName = "QueryLength";
+            this.QueryLength.HeaderText = "Длина очереди";
+            this.QueryLength.Name = "QueryLength";
+            this.QueryLength.ReadOnly = true;
+            this.QueryLength.Width = 110;
+            // 
+            // Receipts
+            // 
+            this.Receipts.DataPropertyName = "Receipts";
+            this.Receipts.HeaderText = "Выручка";
+            this.Receipts.Name = "Receipts";
+            this.Receipts.ReadOnly = true;
             // 
             // ShopForm
             // 
@@ -355,10 +364,11 @@
         private System.Windows.Forms.Label lblByersInEvening;
         private System.Windows.Forms.Label lblByersInDay;
         private System.Windows.Forms.Label lblByersInMorning;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StateId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StateName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn QueryLength;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Receipts;
     }
 }
 

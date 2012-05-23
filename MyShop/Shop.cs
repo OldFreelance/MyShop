@@ -120,7 +120,7 @@ namespace MyShop
                 if (ActiveCashs.Min(s => s.QueryLength) >= MaxQueryLength)
                 {
                     //Активируем новую кассу
-                    Cash cash = Cashs.FirstOrDefault(s => s.StateId == 0 && s.Receipts<10000);
+                    Cash cash = Cashs.FirstOrDefault(s => s.StateId == 0 && s.Receipts < 10000);
                     if (cash != null)
                         cash.StateId = 1;
                 }
@@ -133,7 +133,7 @@ namespace MyShop
                 if (Time.Hour >= 8 && Time.Hour < 22)
                 {
                     //Активируем новую кассу
-                    Cash cash = Cashs.FirstOrDefault(s => s.StateId == 0);
+                    Cash cash = Cashs.FirstOrDefault(s => s.StateId == 0 && s.Receipts < 10000);
                     if (cash != null)
                         cash.StateId = 1;
                 }

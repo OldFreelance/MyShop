@@ -11,6 +11,8 @@ namespace MyShop
     /// </summary>
     public class Cash
     {
+        Random rnd = new Random(Environment.TickCount);
+
         /// <summary>Всевозможные причины обслуживания кассы</summary>
         public static string[] StateDiscriptions = { "Кончилась бумага", "Аннуляция", "Кассир отошел" };
 
@@ -18,7 +20,7 @@ namespace MyShop
         public string Name { get; set; }
 
         /// <summary>Состояние кассы (0 - неактивна, 1 - активна, 2 - инкассация, 3 - обслуживание)</summary>
-        public int StateId;
+        public int StateId { get; set; }
         public string StateName
         {
             get
@@ -142,13 +144,13 @@ namespace MyShop
         /// </summary>
         private void Maintenance()
         {
-            Random rnd = new Random(Environment.TickCount);
+            //Random rnd = new Random(Environment.TickCount);
 
             switch(StateId)
             {
                 case 1:
                     //Примерно одна поломка в час
-                    if (rnd.Next(3600) == 0)
+                    if (rnd.Next(3600) == 1)
                     {
                         StateDiscription = StateDiscriptions[rnd.Next(StateDiscriptions.Length)];
                         StateId = 3;
@@ -226,7 +228,7 @@ namespace MyShop
         /// </summary>
         public void Encashment()
         {
-            Random rnd = new Random(Environment.TickCount);
+            //Random rnd = new Random(Environment.TickCount);
 
             StateId = 2;
             EncashmentTime = Shop.Time;
@@ -246,7 +248,7 @@ namespace MyShop
             if (Shop.ActiveCashs.Count == 0)
             {
                 //Создание новой и перевод всей очереди туда
-                Cash cash = Shop.Cashs.FirstOrDefault(s => s.StateId == 0);
+                Cash cash = Shop.Cashs.FirstOrDefault(s => s.StateId == 0 && s.Receipts < 10000);
                 //Если нет кассы которую можно открыть
                 if (cash == null)
                     //Выгоняем покупателей

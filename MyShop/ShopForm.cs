@@ -28,6 +28,12 @@ namespace MyShop
             {
                 dataGridViewCashs.Refresh();
                 GridLastRefreshTime = DateTime.Now;
+
+                foreach (DataGridViewRow row in dataGridViewCashs.Rows)
+                {
+                    //Расскраска ячейки состояния
+                    row.Cells["StateName"].Style.BackColor = (int)row.Cells["StateId"].Value == 3 ? Color.Red : Color.White;
+                }
             }
 
             lblTime.Text = Shop.Time.ToString();
