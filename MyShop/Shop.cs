@@ -120,12 +120,14 @@ namespace MyShop
                 if (ActiveCashs.Min(s => s.QueryLength) >= MaxQueryLength)
                 {
                     //Активируем новую кассу
-                    Cash cash = Cashs.FirstOrDefault(s => s.StateId == 0);
+                    Cash cash = Cashs.FirstOrDefault(s => s.StateId == 0 && s.Receipts<10000);
                     if (cash != null)
                         cash.StateId = 1;
                 }
             }
-            else
+
+            //Если нет ни одной активной кассы
+            if(Cashs.Where(s=>s.StateId==1).Count(s=>true)==0)
             {
                 //Если нет работающих касс и сейчас не ночь
                 if (Time.Hour >= 8 && Time.Hour < 22)
@@ -162,7 +164,7 @@ namespace MyShop
         /// </summary>
         private void GenerateByers()
         {
-            Random rnd = new Random();
+            Random rnd = new Random(Environment.TickCount);
             int intensity=0;
 
             //Определение интенсивности по времени дня

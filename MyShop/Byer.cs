@@ -21,7 +21,7 @@ namespace MyShop
 
         public Byer(Shop shop)
         {
-            Random rnd = new Random();
+            Random rnd = new Random(Environment.TickCount);
             
             TimeArrived = shop.Time;
             HandlingTime = new TimeSpan(0, 0, rnd.Next(shop.HandlingTimeFrom, shop.HandlingTimeTo));

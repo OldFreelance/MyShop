@@ -82,7 +82,8 @@ namespace MyShop
         /// <returns>Строка состояния кассы</returns>
         public override string ToString()
         {
-            return StateName + "("+QueryLength +" покупателей, выручка "+Receipts+")";
+            return string.Format("{0} ({1}, {2} покупателей, выручка {3})", Name, StateName, QueryLength, Receipts);
+            //return Name + " ("+StateName+", "+QueryLength +" покупателей, выручка "+Receipts+")";
         }
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace MyShop
             Maintenance();
 
             //Если выручка на кассе больше чем 10000
-            if(StateId==1 && Receipts>=10000)
+            if(/*StateId==1 &&*/ Receipts>=10000)
             {
                 //Если на инкассации стоит меньше 2х касс
                 if (Shop.Cashs.Where(s => s.StateId == 2).Count(s=>true) < 2)
@@ -111,9 +112,12 @@ namespace MyShop
                 else
                 {
                     //Если сумма на кассе превышает 15000
-                    if(Receipts>15000)
-                        //Принудительная инкассация
-                        Encashment();
+                    if (Receipts > 15000)
+                    {
+                        //Закрываем кассу
+                        StateId = 0;
+                        DistributeByers();
+                    }
                     //Иначе касса работает дальше
                 }
             }
@@ -138,7 +142,7 @@ namespace MyShop
         /// </summary>
         private void Maintenance()
         {
-            Random rnd = new Random();
+            Random rnd = new Random(Environment.TickCount);
 
             switch(StateId)
             {
@@ -222,7 +226,7 @@ namespace MyShop
         /// </summary>
         public void Encashment()
         {
-            Random rnd = new Random();
+            Random rnd = new Random(Environment.TickCount);
 
             StateId = 2;
             EncashmentTime = Shop.Time;
