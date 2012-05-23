@@ -226,16 +226,37 @@ namespace MyShop
         /// </summary>
         public void DistributeByers()
         {
-            int cashIndex = 0;
-            //List<Cash> activeCashs = Shop.Cashs.Where(s => s.StateId == 1).ToList();
-            for (int byerIndex = Byers.Count - 1; byerIndex >= 0; byerIndex--)
+            //Если нет открытых касс
+            if (Shop.ActiveCashs.Count == 0)
             {
-                Byer byer = Byers[byerIndex];
-                Byers.Remove(byer);
-                Shop.ActiveCashs[cashIndex].Byers.Add(byer);
-                cashIndex++;
-                if (cashIndex >= Shop.ActiveCashs.Count)
-                    cashIndex = 0;
+                //Создание новой и перевод всей очереди туда
+                Cash cash = Shop.Cashs.FirstOrDefault(s => s.StateId == 0);
+                //Если нет кассы которую можно открыть
+                if (cash == null)
+                    //Выгоняем покупателей
+                    KickAwayByers();
+                else
+                {
+                    //Открываем кассу
+                    cash.StateId = 1;
+                    //Переводим туда очередь
+                    cash.Byers.AddRange(Byers);
+                    Byers.Clear();
+                }
+            }
+            else
+            {
+                int cashIndex = 0;
+                //List<Cash> activeCashs = Shop.Cashs.Where(s => s.StateId == 1).ToList();
+                for (int byerIndex = Byers.Count - 1; byerIndex >= 0; byerIndex--)
+                {
+                    Byer byer = Byers[byerIndex];
+                    Byers.Remove(byer);
+                    Shop.ActiveCashs[cashIndex].Byers.Add(byer);
+                    cashIndex++;
+                    if (cashIndex >= Shop.ActiveCashs.Count)
+                        cashIndex = 0;
+                }
             }
         }
 

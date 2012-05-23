@@ -64,7 +64,7 @@ namespace MyShop
         {
             DateTime now = DateTime.Now;
             TimeStep = 1;
-            Time = new DateTime(now.Year, now.Month, now.Day, 21, 0, 0);
+            Time = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0);
             Receipts = 0;
             DiscountDay = false;
             UnservicedByersCount = 0;
