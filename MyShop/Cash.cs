@@ -122,7 +122,8 @@ namespace MyShop
                     else
                     {
                         //Инкассация
-                        Encashment();
+                        if(StateId != 2)
+                            Encashment();
                     }
                 }
                 else
