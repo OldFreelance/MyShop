@@ -69,6 +69,9 @@ namespace MyShop
         /// <summary>Продолжительность обслуживания</summary>
         public TimeSpan MaintenanceLength;
 
+        /// <summary>Время закрытия кассы после тогокак в ней накопилось более 15000 рублей</summary>
+        public DateTime ClosingTime;
+
         /// <summary>Покупатели на кассе</summary>
         public List<Byer> Byers;
 
@@ -103,21 +106,33 @@ namespace MyShop
             Maintenance();
 
             //Если выручка на кассе больше чем 10000
-            if(/*StateId==1 &&*/ Receipts>=10000)
+            if(Receipts>=10000)
             {
                 //Если на инкассации стоит меньше 2х касс
                 if (Shop.Cashs.Where(s => s.StateId == 2).Count(s=>true) < 2)
                 {
-                    //Инкассация
-                    Encashment();
+                    //Перед тем как зыкрыть текущую кассу пеобходимо проверить нет ли кассы с выручкой более 15000 которая давно ожидает инкассации
+                    List<Cash> closedCashs = Shop.Cashs.Where(s => s.StateId == 0 && s.Receipts > 15000).ToList();
+                    if (closedCashs.Count > 0)
+                    {
+                        //Находим среди закрытых касс кассу закрытую раньше всего
+                        Cash cash = closedCashs.FirstOrDefault(c => c.ClosingTime == closedCashs.Min(s => s.ClosingTime));
+                        cash.Encashment();
+                    }
+                    else
+                    {
+                        //Инкассация
+                        Encashment();
+                    }
                 }
                 else
                 {
                     //Если сумма на кассе превышает 15000
-                    if (Receipts > 15000)
+                    if (Receipts > 15000 && StateId == 1)
                     {
                         //Закрываем кассу
                         StateId = 0;
+                        ClosingTime = Shop.Time;
                         DistributeByers();
                     }
                     //Иначе касса работает дальше
